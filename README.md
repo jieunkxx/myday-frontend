@@ -1,1 +1,1 @@
-# MyDay-frontend
+# myday-frontend
