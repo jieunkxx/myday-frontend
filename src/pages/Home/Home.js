@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import MainChart from '../../components/mainChart/MainChart.js';
+import DailySchedule from '../../components/schedule/DailySchedule';
 
 function Home() {
   const navigate = useNavigate();
@@ -16,7 +18,6 @@ function Home() {
     }
   }, [token]);
 
-  
   if (location?.state?.token) {
     auth = location.state.token;
     localStorage.setItem('token', location.state.token);
@@ -24,7 +25,7 @@ function Home() {
   return (
     <Main>
       <MainChart />
-      <Schedule />
+      <DailySchedule />
     </Main>
   );
 }

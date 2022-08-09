@@ -7,7 +7,7 @@ export const LoginContext = createContext({
 });
 
 function App() {
-  const loginState = useState({ isLogin: false });
+  const loginState = useState({ isLogin: true });
   return (
     <LoginContext.Provider value={loginState}>
       <Router />

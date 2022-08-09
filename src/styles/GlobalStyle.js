@@ -6,6 +6,9 @@ const GlobalStyle = createGlobalStyle`
 	
   * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'AirbnbCereal_W_Bk', 'Montserrat', sans-serif, Courier, monospace;
   }
 
 	img {

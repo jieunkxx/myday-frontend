@@ -1,4 +1,3 @@
-
 export const REDIRECT_URI = 'http://localhost:8000/user/kakao/login';
 export const FRONT_REDIRECT_URL = 'http://localhost:3000';
 export const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize';
