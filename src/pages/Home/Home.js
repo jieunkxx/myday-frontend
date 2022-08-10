@@ -33,7 +33,7 @@ function Home() {
 const Main = styled.div`
   width: 726px;
   margin: auto auto;
-  background-color: #f6efef;
+  background-color: #fdeceb;
   padding: 0 10px;
   font-family: 'AirbnbCereal_W_Bk', 'Montserrat', sans-serif, Courier, monospace;
 `;
