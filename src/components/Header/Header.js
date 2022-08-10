@@ -42,7 +42,7 @@ function Header() {
 
 const HeaderContainer = styled.div`
   width: 726px;
-  margin: 1em auto auto;
+  margin: 1px auto auto;
   display: flex;
   align-items: center;
   font-family: 'AirbnbCereal_W_Bk', 'Montserrat', sans-serif, Courier, monospace;

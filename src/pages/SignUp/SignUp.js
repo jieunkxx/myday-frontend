@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+const mainImg = './icons/alarm-clock.png';
 function SignUp() {
   return (
     <Wrapper>
       <Section>
         <Background>
-          <LeftIMG>
-            <TitleLeft>My</TitleLeft>
-          </LeftIMG>
-          <RightIMG>
-            <TitleRight>Day</TitleRight>
-          </RightIMG>
+          <LeftIMG />
+          <RightIMG />
+          <MainTitle>
+            <MainImg>
+              <img id="main-img" alt="img" src={mainImg} />
+            </MainImg>
+            <Title>
+              <span>My day</span>
+            </Title>
+          </MainTitle>
         </Background>
       </Section>
     </Wrapper>
@@ -27,39 +31,52 @@ const Wrapper = styled.div`
 `;
 
 const Section = styled.section`
-  width: 660;
-  height: 100%;
+  width: 726px;
+  height: 700px;
   margin: auto auto;
 `;
 
 const Background = styled.section`
-  display: flex;
-  align-items: center;
-  min-width: 726px;
+  position: absolute;
   width: 100%;
-  height: 100%;
 `;
 
 const LeftIMG = styled.div`
-  width: 50%;
+  position: relative;
+  width: 363px;
+  height: 700px;
   background-color: #f7b9b6;
+  z-index: 1;
 `;
 
 const RightIMG = styled.div`
-  width: 50%;
+  position: relative;
+  bottom: 700px;
+  left: 363px;
+  width: 363px;
+  height: 700px;
   background-color: #caeae5;
+  z-index: 1;
 `;
 
-const TitleLeft = styled.h1`
-  text-align: right;
-  font-weight: 700;
-  font-size: 40px;
-  padding: 450px 20px 150px 70px;
+const MainTitle = styled.section`
+  position: relative;
+  bottom: 1200px;
+  left: 264px;
+  z-index: 2;
 `;
 
-const TitleRight = styled.h1`
-  text-align: left;
+const Title = styled.h1`
+  margin: 90px 20px;
+  padding-left: 10px;
   font-weight: 700;
   font-size: 40px;
-  padding: 450px 70px 150px 20px;
+  z-index: 3;
+`;
+
+const MainImg = styled.div`
+  z-index: 3;
+  img {
+    height: 200px;
+  }
 `;
