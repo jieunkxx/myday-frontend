@@ -32,6 +32,7 @@ function Home() {
 
 const Main = styled.div`
   width: 726px;
+  height: 700px;
   margin: auto auto;
   background-color: #fdeceb;
   padding: 0 10px;
