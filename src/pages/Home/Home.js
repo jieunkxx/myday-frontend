@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import MainChart from '../../components/mainChart/MainChart.js';
-import DailySchedule from '../../components/schedule/DailySchedule';
+import MainChart from '../../components/MainChart/MainChart.js';
+import DailySchedule from '../../components/Schedule/DailySchedule';
 
 function Home() {
   const navigate = useNavigate();
@@ -30,6 +30,12 @@ function Home() {
   );
 }
 
-const Main = styled.div``;
+const Main = styled.div`
+  width: 726px;
+  margin: auto auto;
+  background-color: #f6efef;
+  padding: 0 10px;
+  font-family: 'AirbnbCereal_W_Bk', 'Montserrat', sans-serif, Courier, monospace;
+`;
 
 export default Home;

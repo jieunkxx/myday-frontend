@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import BASE_URL from '../../config';
 
 function SignUp() {
-  const [email, setEmail] = useState('');
-
   return (
     <Wrapper>
       <Section>
@@ -32,7 +29,7 @@ const Wrapper = styled.div`
 const Section = styled.section`
   width: 660;
   height: 100%;
-  margin: 40px auto auto;
+  margin: auto auto;
 `;
 
 const Background = styled.section`

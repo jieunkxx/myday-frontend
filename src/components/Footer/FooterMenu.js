@@ -13,6 +13,8 @@ import * as oAuth from '../Login/OAuth';
 import { Home, UserFriends } from '@styled-icons/fa-solid';
 import { ChartPie } from '@styled-icons/heroicons-outline/ChartPie';
 import { CardChecklist } from '@styled-icons/bootstrap/CardChecklist';
+import { updateDateTime } from '../../utils/updateCurr';
+import { updateStatus } from '../../utils/updateCurr';
 
 function FooterMenu() {
   const [token, setToken] = useState();
@@ -74,6 +76,7 @@ function FooterMenu() {
 }
 
 const FooterContainer = styled.div`
+  width: 726px;
   display: flex;
   align-items: center;
   color: #bdbdbd;
@@ -82,7 +85,7 @@ const FooterContainer = styled.div`
 `;
 
 const FooterWrapper = styled.div`
-  width: 728px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

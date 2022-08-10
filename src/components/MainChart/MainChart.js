@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import moment from 'moment';
 import { Rocket } from '@styled-icons/fluentui-system-regular/Rocket';
 import { NavigateBefore, NavigateNext } from '@styled-icons/material';
-
+import { updateDateTime } from '../../utils/updateCurr';
 function MainChart() {
-  let update = function () {
-    document.getElementById('date').innerHTML = moment().format('MMM DD');
-    document.getElementById('time').innerHTML = moment().format('HH:mm A');
-  };
-  setInterval(update, 10000);
+  const [currTime, setCurrTime] = useState();
+  const [currDate, setCurrDate] = useState();
+  window.onload = setInterval(updateDateTime, 1000);
+
   return (
     <Wrapper>
       <Section>
         <Header>
           <Time>
-            <div id="time"></div>
+            <div id="time" />
           </Time>
           <Title>My Day</Title>
           <DateFormat>
-            <div id="date"></div>
+            <div id="date" />
           </DateFormat>
         </Header>
         <ChartWrapper>
@@ -42,29 +39,29 @@ function MainChart() {
 export default MainChart;
 
 const Wrapper = styled.div`
+  width: 100%;
   display: flex;
-  font-family: 'AirbnbCereal_W_Bk', 'Montserrat', sans-serif, Courier, monospace;
 `;
 
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  min-width: 726px;
-  margin: 40px auto auto;
-  background-color: #f6efef;
+  width: 100%;
 `;
 
 const Header = styled.div`
-  max-width: 726px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: 18px;
 `;
 const Time = styled.h3`
+  padding-left: 10px;
+  padding-bottom: 10px;
   div {
     text-align: left;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 
@@ -80,7 +77,6 @@ const DateFormat = styled.h2`
   font-size: 30px;
 `;
 const ChartWrapper = styled.div`
-  max-width: 726px;
   display: flex;
   justify-content: space-around;
   align-items: center;

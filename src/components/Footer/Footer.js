@@ -1,36 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  useNavigate,
-  Link,
-  useSearchParams,
-  useLocation,
-} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Login from '../Login/Login';
-import { LoginContext } from '../../App';
-import BASE_URL from '../../config';
-import * as oAuth from '../Login/OAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faN, faB } from '@fortawesome/free-solid-svg-icons';
-import {
-  faInstagram,
-  faYoutube,
-  faFacebookF,
-} from '@fortawesome/free-brands-svg-icons';
-library.add(faN, faB, faInstagram, faYoutube, faFacebookF);
 
 function Footer() {
   const [token, setToken] = useState();
-  const [isLogin, setIsLogin] = useContext(LoginContext);
-  const [email, setEmail] = useState('');
-
   const [modal, setModal] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-  const [scrollToggle, setScrollToggle] = useState(false);
-  const [text, setText] = useState('');
-  const [query, setQuery] = useSearchParams();
-  const searchParams = new URLSearchParams(query);
   const navigate = useNavigate();
   const location = useLocation();
   const openModal = () => {

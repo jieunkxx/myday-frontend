@@ -7,20 +7,21 @@ import Budget from './pages/Budget/Budget';
 import Friends from './pages/Friends/Friends';
 import SignUp from './pages/SignUp/SignUp';
 import KakaoLogin from './components/Login/KakaoLogin';
+import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import FooterMenu from './components/Footer/FooterMenu';
 
 function Router() {
   const [isLogin, setIsLogin] = useContext(LoginContext);
-  console.log('isLogin: ', isLogin);
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/schedule" element={<Schedule />} />
-        <Route path="/budget" element={<Budget />} />
         <Route path="/friends" element={<Friends />} />
+        <Route path="/budget" element={<Budget />} />
       </Routes>
       {isLogin ? <FooterMenu /> : <Footer />}
     </BrowserRouter>
