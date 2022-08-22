@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import moment from 'moment';
 import styled from 'styled-components';
 import { TaskAlt } from '@styled-icons/material-rounded/TaskAlt';
 import { TasksApp } from '@styled-icons/fluentui-system-regular/TasksApp';
+import BASE_URL from '../../config';
 
-function Schedule(props) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  let token = new URL(window.location.href).searchParams.get('token');
-  let auth;
-
-  const [contentText, setContent] = useState('');
-
-  if (location?.state?.token) {
-    auth = location.state.token;
-    localStorage.setItem('token', location.state.token);
-  }
-
-  useEffect(() => {
-    if (token) {
-      navigate('./', {
-        state: { token: token },
-      });
-    }
-  }, [token]);
+function ContentElement(props) {
+  const token = localStorage.getItem('token');
+  const { content } = props;
+  const [contentText, setContent] = useState(content.title);
+  const getTime = time => {
+    const res =
+      time.split('T')[1].split(':')[0] + ':' + time.split('T')[1].split(':')[1];
+    return res;
+  };
+  const startTime = getTime(content?.start_time);
+  const endTime = getTime(content?.end_time);
 
   const onContentHandler = e => {
     setContent(e.currentTarget.value);
@@ -34,7 +27,9 @@ function Schedule(props) {
       <Section>
         <ScheduleWrapper>
           <Hours>
-            <span>08:30 - 10:00</span>
+            <span>
+              {startTime}&nbsp;-&nbsp;{endTime}
+            </span>
           </Hours>
           <Content>
             <ContentIcon />
@@ -52,7 +47,7 @@ function Schedule(props) {
   );
 }
 
-export default Schedule;
+export default ContentElement;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -113,7 +108,7 @@ const Input = styled.input`
   height: 35px;
   padding: 13px 12px;
   margin-left: 10px;
-  margin-bottm: 12px;
+  margin-bottom: 12px;
   outline: none;
   border: transparent;
   border-radius: 15px;

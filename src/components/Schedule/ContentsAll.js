@@ -1,58 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import { TaskAlt } from '@styled-icons/material-rounded/TaskAlt';
 import { TasksApp } from '@styled-icons/fluentui-system-regular/TasksApp';
-
-function Schedule(props) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  let token = new URL(window.location.href).searchParams.get('token');
-  let auth;
-
+import BASE_URL from '../../config';
+import ContentElement from './ContentElement';
+import { currDate } from '../../utils/updateCurr';
+function ContentsAll(props) {
   const [contentText, setContent] = useState('');
-
-  if (location?.state?.token) {
-    auth = location.state.token;
-    localStorage.setItem('token', location.state.token);
-  }
+  const [contents, setContents] = useState(null);
+  const [date, setDate] = useState(currDate);
+  //const token = localStorage.getItem('token');
+  console.log('BASE_URL: ', `${BASE_URL}`);
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxMTM1NzYxLCJleHAiOjE2NjEyMjIxNjF9.st3DkmenXAE3rlJL78DdYZS7I1yl3-PtiCHG72t2-AI';
+  const contentsApi = async () => {
+    const response = await axios.post(
+      `http://localhost:8000/contents`,
+      {
+        date: '2022-08-04',
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setContents(response.data.contents);
+  };
 
   useEffect(() => {
-    if (token) {
-      navigate('./', {
-        state: { token: token },
-      });
-    }
-  }, [token]);
-
+    contentsApi();
+  }, []);
   const onContentHandler = e => {
     setContent(e.currentTarget.value);
   };
-
   return (
     <Wrapper>
       <Section>
         <ScheduleWrapper>
-          <Hours>
-            <span>08:30 - 10:00</span>
-          </Hours>
-          <Content>
-            <ContentIcon />
-            <Context>
-              <Input
-                type="content"
-                value={contentText}
-                onChange={onContentHandler}
-              />
-            </Context>
-          </Content>
+          {contents ? (
+            contents?.map(content => (
+              <ContentElement key={content.id} content={content} />
+            ))
+          ) : (
+            <EmptyScheduleWrapper>empty</EmptyScheduleWrapper>
+          )}
         </ScheduleWrapper>
       </Section>
     </Wrapper>
   );
 }
 
-export default Schedule;
+export default ContentsAll;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -121,3 +121,4 @@ const Input = styled.input`
   :focus {
   }
 `;
+const EmptyScheduleWrapper = styled.div``;
