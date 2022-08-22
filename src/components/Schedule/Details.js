@@ -19,7 +19,6 @@ function Details() {
 
   window.onload = setInterval(updateStatus, 1000);
   let scrollArea = document.getElementById('scroll');
-  console.log(scrollArea);
   return (
     <Wrapper>
       <Section>
