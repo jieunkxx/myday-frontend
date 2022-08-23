@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { NavigateBefore, NavigateNext } from '@styled-icons/material';
 import { updateDateTime } from '../../utils/updateCurr';
-function MainChart() {
+function CurrentDate() {
   const [currTime, setCurrTime] = useState();
   const [currDate, setCurrDate] = useState();
   window.onload = setInterval(updateDateTime, 1000);
@@ -23,7 +23,7 @@ function MainChart() {
   );
 }
 
-export default MainChart;
+export default CurrentDate;
 
 const Wrapper = styled.div`
   width: 100%;

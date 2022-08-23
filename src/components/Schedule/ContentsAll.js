@@ -108,17 +108,4 @@ const Context = styled.div`
   justify-content: flex-start;
 `;
 
-const Input = styled.input`
-  width: 94%;
-  height: 35px;
-  padding: 13px 12px;
-  margin-left: 10px;
-  margin-bottm: 12px;
-  outline: none;
-  border: transparent;
-  border-radius: 15px;
-  background-color: #f2f2f2;
-  :focus {
-  }
-`;
 const EmptyScheduleWrapper = styled.div``;
