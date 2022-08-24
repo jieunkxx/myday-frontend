@@ -2,33 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { TaskAlt } from '@styled-icons/material-rounded/TaskAlt';
+import { TasksApp } from '@styled-icons/fluentui-system-regular/TasksApp';
+import BASE_URL from '../../config';
 import ContentElement from './ContentElement';
 import EmptySchedule from './EmptySchedule';
-function ContentsAll(props) {
+import { currDate } from '../../utils/updateCurr';
+function ContentsHome(props) {
   const { contents } = props;
-  const [contentText, setContent] = useState('');
   const token = localStorage.getItem('token');
-  // const contentsApi = async () => {
-  //   const response = await axios.post(
-  //     `${BASE_URL}/contents`,
-  //     {
-  //       date: date,
-  //     },
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  //   setContents(response.data.contents);
-  // };
 
-  // useEffect(() => {
-  //   contentsApi();
-  // }, []);
-  const onContentHandler = e => {
-    setContent(e.currentTarget.value);
-  };
   return (
     <Wrapper>
       <Section>
@@ -46,7 +28,7 @@ function ContentsAll(props) {
   );
 }
 
-export default ContentsAll;
+export default ContentsHome;
 
 const Wrapper = styled.div`
   width: 100%;

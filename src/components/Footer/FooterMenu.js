@@ -26,7 +26,7 @@ function FooterMenu() {
   };
 
   const goToHome = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const goToSchedule = () => {
@@ -38,7 +38,7 @@ function FooterMenu() {
   };
 
   const goToFriends = () => {
-    navigate('/signup');
+    navigate('/friends');
   };
 
   return (
@@ -108,6 +108,9 @@ const FooterTop = styled.div`
     :hover {
       opacity: 1;
       cursor: pointer;
+    }
+    :active {
+      opacity: 1;
     }
   }
 `;

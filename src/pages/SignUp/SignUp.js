@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { LoginContext } from '../../App';
 const mainImg = './icons/alarm-clock.png';
 function SignUp() {
+  const token = localStorage.getItem('token');
+  const [isLogin, setIsLogin] = useContext(LoginContext);
+
   return (
     <Wrapper>
       <Section>

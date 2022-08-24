@@ -7,9 +7,9 @@ import ContentsAll from './ContentsAll';
 import { updateStatus } from '../../utils/updateCurr';
 import BASE_URL from '../../config';
 
-function Details() {
+function Details(props) {
+  const { contents } = props;
   const [modal, setModal] = useState(false);
-  const [contents, setContents] = useState([]);
 
   const token = localStorage.getItem('token');
 
@@ -19,6 +19,7 @@ function Details() {
 
   window.onload = setInterval(updateStatus, 1000);
   let scrollArea = document.getElementById('scroll');
+
   return (
     <Wrapper>
       <Section>
@@ -30,7 +31,7 @@ function Details() {
             <EditIcon onClick={openModal} />
           </Header>
           <Schedules>
-            <ContentsAll />
+            <ContentsAll contents={contents} />
           </Schedules>
         </ScheduleWrapper>
       </Section>
@@ -62,7 +63,7 @@ const ScheduleWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-height: 430px;
+  max-height: 450px;
   overflow-y: auto;
   overflow-x: hidden;
   /* Designing for scroll-bar */
@@ -75,15 +76,16 @@ const ScheduleWrapper = styled.div`
     border-radius: 5px;
   }
 
-  /* Handle */
-  //::-webkit-scrollbar-thumb {
-  //  background: black;
-  //  border-radius: 5px;
-  //}
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  :hover {
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #979494;
+      border-radius: 5px;
+    }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
   }
 `;
 
@@ -117,4 +119,3 @@ const EditIcon = styled(Edit)`
 const Schedules = styled.div`
   width: 100%;
 `;
-const EmptyScheduleWrapper = styled.div``;

@@ -1,19 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import moment from 'moment';
 import { Edit } from '@styled-icons/fa-regular/Edit';
-import Content from './Content';
+import ContentsHome from './ContentsHome';
+import EmptySchedule from './EmptySchedule';
+import EditContents from './EditContents';
 import { updateStatus } from '../../utils/updateCurr';
-
-function DailySchedule() {
+import BASE_URL from '../../config';
+import { currDate } from '../../utils/updateCurr';
+function DailySchedule(props) {
+  const token = localStorage.getItem('token');
+  const [contents, setContents] = useState(null);
+  const [isUpdated, setIsUpdated] = useState(true);
   const [modal, setModal] = useState(false);
+  const { date } = props;
   const openModal = () => {
     setModal(true);
   };
-
   window.onload = setInterval(updateStatus, 1000);
+
+  const contentsApi = async () => {
+    await axios
+      .post(
+        `${BASE_URL}/contents`,
+        {
+          date: date,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then(response => {
+        setContents(response.data.contents);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    contentsApi();
+  }, [date, isUpdated]);
   return (
     <Wrapper>
+      {modal && (
+        <EditContents
+          openModel={openModal}
+          setModal={setModal}
+          setContents={setContents}
+          setIsUpdated={setIsUpdated}
+        />
+      )}
       <Section>
         <ScheduleWrapper>
           <Header>
@@ -22,10 +61,13 @@ function DailySchedule() {
             </Status>
             <EditIcon onClick={openModal} />
           </Header>
-          <Schedules>
-            <Content />
-          </Schedules>
-          <EmptyScheduleWrapper>empty</EmptyScheduleWrapper>
+          {contents?.length > 0 ? (
+            <Schedules>
+              <ContentsHome contents={contents} />
+            </Schedules>
+          ) : (
+            <EmptySchedule />
+          )}
         </ScheduleWrapper>
       </Section>
     </Wrapper>
@@ -87,4 +129,3 @@ const EditIcon = styled(Edit)`
 const Schedules = styled.div`
   width: 100%;
 `;
-const EmptyScheduleWrapper = styled.div``;

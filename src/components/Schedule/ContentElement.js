@@ -9,14 +9,14 @@ import BASE_URL from '../../config';
 function ContentElement(props) {
   const token = localStorage.getItem('token');
   const { content } = props;
-  const [contentText, setContent] = useState(content.title);
+  const [contentText, setContent] = useState(content?.title || '');
   const getTime = time => {
     const res =
       time.split('T')[1].split(':')[0] + ':' + time.split('T')[1].split(':')[1];
     return res;
   };
-  const startTime = getTime(content?.start_time);
-  const endTime = getTime(content?.end_time);
+  const startTime = getTime(content?.start_time) || moment().format('hh:mm');
+  const endTime = getTime(content?.end_time) || '';
 
   const onContentHandler = e => {
     setContent(e.currentTarget.value);
@@ -32,7 +32,11 @@ function ContentElement(props) {
             </span>
           </Hours>
           <Content>
-            <ContentIcon />
+            <ContentIcon
+              style={{
+                color: `${content.hex}`,
+              }}
+            />
             <Context>
               <Input
                 type="content"
@@ -93,7 +97,7 @@ const ContentIcon = styled(TaskAlt)`
   align-items: center;
   justify-content: center;
   height: 25px;
-  color: black;
+  font-weight: bold;
 `;
 
 const Context = styled.div`
@@ -106,13 +110,14 @@ const Context = styled.div`
 const Input = styled.input`
   width: 94%;
   height: 35px;
-  padding: 13px 12px;
+  padding: 20px;
   margin-left: 10px;
-  margin-bottom: 12px;
   outline: none;
   border: transparent;
   border-radius: 15px;
   background-color: #f2f2f2;
+  font-size: 15px;
+  font-weight: 500;
   :focus {
   }
 `;

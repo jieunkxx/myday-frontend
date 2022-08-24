@@ -1,40 +1,83 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 import Login from '../Login/Login';
-const user = {
-  email: 'test@test.com',
-  name: 'tester1',
-  img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtdz6QQYO7SjHPl-ruRNK-KbfAKhjQEeOAmg&usqp=CAU',
-};
+import BASE_URL from '../../config';
+import { LoginContext } from '../../App';
+
 function Header() {
-  const [token, setToken] = useState();
+  const token = localStorage.getItem('token');
+  const [user, setUser] = useState();
+  const [isLogin, setIsLogin] = useContext(LoginContext);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const openModal = () => {
-    setModal(true);
+
+  const kakaoLogout = async token => {
+    try {
+      await fetch(`${BASE_URL}/user/kakao/logout`, {
+        method: 'POST',
+        headers: {
+          Authorization: token,
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log('data ', data);
+          localStorage.clear();
+          localStorage.removeItem('token');
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const goToHome = () => {
-    navigate('/');
+  const logout = async () => {
+    await kakaoLogout(token);
+    localStorage.clear();
+    localStorage.removeItem('token');
+    setIsLogin(false);
+    //goToHome();
+  };
+  const userApi = async () => {
+    await axios
+      .get(`${BASE_URL}/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        setUser(response.data.user);
+      })
+      .catch(error => {
+        if (error.response.data === 'jwt_expired') {
+          localStorage.removeItem('token');
+        }
+      });
   };
 
-  const goToSignUp = () => {
-    navigate('/signup');
-  };
+  useEffect(() => {
+    if (isLogin) {
+      userApi();
+    }
+  }, [isLogin]);
 
   return (
     <HeaderContainer>
       <HeaderWrapper>
-        <UserInfo>
-          <Name>
-            <span>{user.name}</span>
-          </Name>
-          <Img>
-            <img src={user.img} />
-          </Img>
-        </UserInfo>
+        {user ? (
+          <UserInfo>
+            <Name>
+              <span>{user.user_name}</span>
+            </Name>
+            <Img>
+              <img alt="" src={user.user_img} />
+            </Img>
+          </UserInfo>
+        ) : (
+          <BeforeLogin />
+        )}
       </HeaderWrapper>
     </HeaderContainer>
   );
@@ -63,11 +106,14 @@ const UserInfo = styled.div`
 `;
 
 const Name = styled.div`
+  margin: 0 10px;
   span {
     font-size: 20px;
+    font-weight: 700;
   }
 `;
 const Img = styled.div`
+  margin: 0 10px;
   img {
     height: 30px;
     border-radius: 50%;
@@ -75,4 +121,7 @@ const Img = styled.div`
   }
 `;
 
+const BeforeLogin = styled.div`
+  height: 30px;
+`;
 export default Header;

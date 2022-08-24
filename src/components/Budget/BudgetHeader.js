@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import styled from 'styled-components';
-import { NavigateBefore, NavigateNext } from '@styled-icons/material';
-import { updateDateTime } from '../../utils/updateCurr';
-function CurrentDate(props) {
-  const { date } = props;
-  const [currTime, setCurrTime] = useState();
-  const [currDate, setCurrDate] = useState();
-  window.onload = setInterval(updateDateTime, 1000);
 
+function BudgetHeader() {
   return (
     <Wrapper>
       <Section>
@@ -16,15 +9,14 @@ function CurrentDate(props) {
           <Time>
             <div id="time" />
           </Time>
-          <Title>My Day</Title>
-          <DateFormat>{moment(date).format('MMM DD')}</DateFormat>
+          <Title>Budget</Title>
         </Header>
       </Section>
     </Wrapper>
   );
 }
 
-export default CurrentDate;
+export default BudgetHeader;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -57,10 +49,4 @@ const Title = styled.h1`
   text-align: left;
   font-weight: 700;
   font-size: 40px;
-`;
-
-const DateFormat = styled.h2`
-  text-align: left;
-  font-weight: 700;
-  font-size: 30px;
 `;
