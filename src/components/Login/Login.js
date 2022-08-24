@@ -26,7 +26,7 @@ function Login({ openModal, setModal }) {
           <SignUpSocial>
             <SocialLine />
             <SocialTitle>Social Login</SocialTitle>
-            <KakaoLogin></KakaoLogin>
+            <KakaoLogin />
           </SignUpSocial>
         </ModalBox>
       </ModalWrapper>

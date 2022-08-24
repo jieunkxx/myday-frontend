@@ -6,13 +6,12 @@ function KakaoLogin() {
   const CLIENT_ID = process.env.REACT_APP_REST_API_KEY;
 
   const requestURL = `${oAuth.KAKAO_AUTH_URL}/?client_id=${CLIENT_ID}&redirect_uri=${oAuth.REDIRECT_URI}&response_type=code`;
-
   const onClick = () => {
     window.open(requestURL);
   };
 
   return (
-    <SocialSignUpBtn onClick={onClick}>
+    <SocialSignUpBtn href={requestURL}>
       <KakaoLogo src="images/kakao_login.png" alt="logo" />
     </SocialSignUpBtn>
   );
@@ -20,7 +19,7 @@ function KakaoLogin() {
 
 export default KakaoLogin;
 
-const SocialSignUpBtn = styled.button`
+const SocialSignUpBtn = styled.a`
   width: 50px;
   height: 50px;
   margin-top: 4px;

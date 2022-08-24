@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="./icons/circular-clock.png" />
-    <title>My Day</title>
-    <script>
-      window.unload = function () {
-        localStorage.clear();
-      };
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <div id="modal"></div>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="./icons/circular-clock.png" />
+  <title>My Day</title>
+  <script>
+    window.unload = function () {
+      localStorage.clear();
+      localStorage.removeItem('token');
+    };
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div id="modal"></div>
+</body>
+
 </html>

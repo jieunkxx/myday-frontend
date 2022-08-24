@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+
 import styled from 'styled-components';
 import { TaskAlt } from '@styled-icons/material-rounded/TaskAlt';
-import { TasksApp } from '@styled-icons/fluentui-system-regular/TasksApp';
 
-function Schedule(props) {
+function EmptySchedule(props) {
+  const token = localStorage.getItem('token');
   const [contentText, setContent] = useState('');
+
   const onContentHandler = e => {
     setContent(e.currentTarget.value);
   };
@@ -14,7 +16,7 @@ function Schedule(props) {
       <Section>
         <ScheduleWrapper>
           <Hours>
-            <span>08:30 - 10:00</span>
+            <span>add new content</span>
           </Hours>
           <Content>
             <ContentIcon />
@@ -32,7 +34,7 @@ function Schedule(props) {
   );
 }
 
-export default Schedule;
+export default EmptySchedule;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -93,7 +95,7 @@ const Input = styled.input`
   height: 35px;
   padding: 13px 12px;
   margin-left: 10px;
-  margin-bottm: 12px;
+  margin-bottom: 12px;
   outline: none;
   border: transparent;
   border-radius: 15px;

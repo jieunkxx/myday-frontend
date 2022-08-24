@@ -20,7 +20,11 @@ const GlobalStyle = createGlobalStyle`
     color: inherit;
     text-decoration: inherit;
   }
-	
+  
+	html{
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
 `;
 
 export default GlobalStyle;

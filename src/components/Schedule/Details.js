@@ -1,84 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
+import styled from 'styled-components';
 import moment from 'moment';
 import { Edit } from '@styled-icons/fa-regular/Edit';
-import ContentsHome from './ContentsHome';
-import EmptySchedule from './EmptySchedule';
-import EditContents from './EditContents';
+import ContentsAll from './ContentsAll';
 import { updateStatus } from '../../utils/updateCurr';
 import BASE_URL from '../../config';
-import { currDate } from '../../utils/updateCurr';
-function DailySchedule(props) {
-  const token = localStorage.getItem('token');
-  const [contents, setContents] = useState(null);
-  const [isUpdated, setIsUpdated] = useState(true);
+
+function Details(props) {
+  const { contents } = props;
   const [modal, setModal] = useState(false);
-  const { date } = props;
+
+  const token = localStorage.getItem('token');
+
   const openModal = () => {
     setModal(true);
   };
-  window.onload = setInterval(updateStatus, 1000);
 
-  const contentsApi = async () => {
-    await axios
-      .post(
-        `${BASE_URL}/contents`,
-        {
-          date: date,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then(response => {
-        setContents(response.data.contents);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-  useEffect(() => {
-    contentsApi();
-  }, [date, isUpdated]);
+  window.onload = setInterval(updateStatus, 1000);
+  let scrollArea = document.getElementById('scroll');
+
   return (
     <Wrapper>
-      {modal && (
-        <EditContents
-          openModel={openModal}
-          setModal={setModal}
-          setContents={setContents}
-          setIsUpdated={setIsUpdated}
-        />
-      )}
       <Section>
-        <ScheduleWrapper>
+        <ScheduleWrapper id="scroll" className="scroll-area">
           <Header>
             <Status>
               <div id="curr" />
             </Status>
             <EditIcon onClick={openModal} />
           </Header>
-          {contents?.length > 0 ? (
-            <Schedules>
-              <ContentsHome contents={contents} />
-            </Schedules>
-          ) : (
-            <EmptySchedule />
-          )}
+          <Schedules>
+            <ContentsAll contents={contents} />
+          </Schedules>
         </ScheduleWrapper>
       </Section>
     </Wrapper>
   );
 }
 
-export default DailySchedule;
+export default Details;
 
 const Wrapper = styled.div`
   width: 100%;
-  display: flex;styled.input
+  height: 550px;
+  display: flex;
 `;
 
 const Section = styled.section`
@@ -97,6 +63,30 @@ const ScheduleWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  max-height: 450px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Designing for scroll-bar */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 5px;
+  }
+
+  :hover {
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #979494;
+      border-radius: 5px;
+    }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
 `;
 
 const Header = styled.div`

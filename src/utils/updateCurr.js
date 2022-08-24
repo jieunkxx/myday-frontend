@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+const current = moment();
+export const currDate = current.format('YYYY-MM-DD');
 const currStatus = currTime => {
   let str;
   switch (true) {
@@ -29,7 +31,7 @@ export const updateDateTime = () => {
 };
 
 export const updateStatus = () => {
-  let str = currStatus(moment().hour());
+  let str = currStatus(current.hour());
   let curr = document.getElementById('curr');
   if (curr !== null) curr.innerHTML = str;
 };

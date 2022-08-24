@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import styled from 'styled-components';
 import { Rocket } from '@styled-icons/fluentui-system-regular/Rocket';
 import { NavigateBefore, NavigateNext } from '@styled-icons/material';
-import { updateDateTime } from '../../utils/updateCurr';
-function MainChart() {
-  const [currTime, setCurrTime] = useState();
-  const [currDate, setCurrDate] = useState();
+import { currDate, updateDateTime } from '../../utils/updateCurr';
+function MainChart(props) {
+  const { date } = props;
+  const [time, setTime] = useState(() => new Date());
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      if (now.getSeconds() !== time.getSeconds()) {
+        setTime(now);
+      }
+    }, 250);
+
+    return () => clearInterval(interval);
+  }, [time]);
   window.onload = setInterval(updateDateTime, 1000);
+
+  const getPrevDate = date => {
+    props.setDate(moment(date).subtract(1, 'days').format('YYYY-MM-DD'));
+  };
+  const getNextDate = date => {
+    props.setDate(moment(date).subtract(-1, 'days').format('YYYY-MM-DD'));
+  };
 
   return (
     <Wrapper>
@@ -16,19 +34,34 @@ function MainChart() {
             <div id="time" />
           </Time>
           <Title>My Day</Title>
-          <DateFormat>
-            <div id="date" />
-          </DateFormat>
+          <DateFormat>{moment(date).format('MMM DD')}</DateFormat>
         </Header>
         <ChartWrapper>
           <Page>
-            <NavigateBefore />
+            <DayBefore onClick={() => getPrevDate(date)} />
           </Page>
           <Chart>
-            <RocketIcon />
+            <Numbers>
+              <div>
+                <p>00</p>
+              </div>
+              <div>
+                <p>06</p>
+                <p>12</p>
+              </div>
+              <div>
+                <p>18</p>
+              </div>
+            </Numbers>
+            <Sectors className="sectors" time={time} />
+            <Outer time={time}>
+              <Current time={time} />
+            </Outer>
+            <Inner />
+            <RocketIcon time={time} />
           </Chart>
           <Page>
-            <NavigateNext />
+            <DayAfter onClick={() => getNextDate(date)} />
           </Page>
         </ChartWrapper>
       </Section>
@@ -47,6 +80,7 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 const Header = styled.div`
@@ -94,8 +128,76 @@ const Chart = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
+  width: 350px;
   height: 350px;
+  position: relative;
+`;
+
+const Numbers = styled.div`
+width: 350px;
+height: 350px;
+position: absolute;  
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+z-index:1;
+div{
+  display: flex;
+  justify-content: center;
+}
+div:nth-child(2){
+  display: flex;
+  justify-content: space-between;
+}
+}`;
+
+const Sectors = styled.div`
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+
+  line {
+    position: absolute;
+    width: 598px;
+    background-color: black;
+    thick {
+      top: calc(50% - 2px);
+      height: 4px;
+      z-index: 1;
+    }
+
+    thin {
+      top: calc(50% - 0.5px);
+      height: 1px;
+    }
+  }
+`;
+const Outer = styled.div.attrs(({ time }) => ({
+  style: {
+    transform: `rotateZ(${
+      ((time.getHours() % 12) * 60 + time.getMinutes()) * 0.5
+    }deg)`,
+  },
+}))`
+  border: 2.5vw solid white;
+  border-radius: 50%;
+  height: 280px;
+  width: 280px;
+  position: absolute;
+  box-shadow: 2px 5px 14px 0 rgba(0, 0, 0, 0.2),
+    9px 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 6;
+`;
+const Inner = styled.div`
+  border-radius: 50%;
+  height: 240px;
+  width: 240px;
+  position: absolute;
+  background-color: #fdeceb;
+  box-shadow: 2px 5px 14px 0 rgba(0, 0, 0, 0.2),
+    9px 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 3;
 `;
 
 const RocketIcon = styled(Rocket)`
@@ -104,4 +206,32 @@ const RocketIcon = styled(Rocket)`
   align-items: center;
   height: 60px;
   color: black;
+  z-index: 4;
+`;
+
+const Current = styled.div.attrs(({ time }) => ({
+  style: {
+    //    transform: `rotateZ(${
+    //      ((time.getHours() % 12) * 60 + time.getMinutes()) * 0.5
+    //    }deg)`,
+  },
+}))`
+  border-radius: 2.5px;
+  height: 0;
+  width: 15px;
+  z-index: 7;
+  border-style: solid;
+  border-width: 0 10px 15px 10px;
+  border-color: transparent transparent #007aff transparent;
+`;
+
+const DayBefore = styled(NavigateBefore)`
+  :hover {
+    cursor: pointer;
+  }
+`;
+const DayAfter = styled(NavigateNext)`
+  :hover {
+    cursor: pointer;
+  }
 `;
