@@ -15,6 +15,7 @@ function Schedule() {
   const [contents, setContents] = useState(null);
   const [date, setDate] = useState(currDate);
   const [isLogin, setIsLogin] = useContext(LoginContext);
+  const [isUpdated, setIsUpdated] = useState(true);
 
   const getPrevDate = date => {
     setDate(moment(date).subtract(1, 'days').format('YYYY-MM-DD'));
@@ -61,7 +62,11 @@ function Schedule() {
         <DayAfter onClick={() => getNextDate(date)} />
       </Page>
       <CurrentDate date={date} setDate={setDate} />
-      <Details contents={contents} />
+      <Details
+        contents={contents}
+        setContents={setContents}
+        setIsUpdated={setIsUpdated}
+      />
     </Main>
   );
 }

@@ -1,6 +1,9 @@
-import React, { useContext, useState, useLayoutEffect } from 'react';
+import React, { useContext, useState, useEffect, Component } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import moment from 'moment';
+import 'flatpickr/dist/themes/material_green.css';
+import Flatpickr from 'react-flatpickr';
 import styled from 'styled-components';
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline';
 import BASE_URL from '../../config';
@@ -9,7 +12,7 @@ import { currDate } from '../../utils/updateCurr';
 function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-  const contentObj = {
+  let contentObj = {
     title: '',
     memo: '',
     start_time: '',
@@ -17,23 +20,29 @@ function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
     color_hex: '#d9cbc2',
     category_name: '',
   };
+  const currMin = Number(moment().format('mm')) < 30 ? '00' : '30';
+  const currTime = moment().format('hh:') + currMin;
   const [date, setDate] = useState(currDate);
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
+  const [startDate, setStartDate] = useState(currDate);
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
   const [contentTitle, setContentTitle] = useState();
-  const [category, setCategory] = useState({
-    category_name: '',
-    color_hex: '#d9cbc2',
-  });
+  const [category, setCategory] = useState();
   const [memo, setMemo] = useState('');
   const [content, setContent] = useState(contentObj);
 
   const addContentAPI = async () => {
     await axios
       .post(
-        `${BASE_URL}/contents`,
+        `${BASE_URL}/contents/create`,
         {
-          category_name: '',
+          title: contentTitle,
+          memo: memo,
+          start_time: startTime,
+          end_time: endTime,
+          color_hex: '#d9cbc2',
+          category_name: category,
+          createCategory: true,
         },
         {
           headers: {
@@ -48,9 +57,14 @@ function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
   };
   const updateContentAPI = async () => {
     const response = await axios.patch(
-      `${BASE_URL}/category`,
+      `${BASE_URL}/category/`,
       {
-        id: 'id',
+        title: contentTitle,
+        memo: memo,
+        start_time: startTime,
+        end_time: endTime,
+        color_hex: '#d9cbc2',
+        category_name: category,
       },
       {
         headers: {
@@ -59,18 +73,23 @@ function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
       }
     );
   };
-  const onStartTimeHandler = e => {};
-  const onEndTimeHandler = e => {};
-  const onContentTitleHandler = e => {};
-  const onCategoryHandler = e => {};
-  const onMemoHandler = e => {};
-  const onBudgetHandler = e => {};
+  const onStartTimeHandler = ([date]) => {
+    setStartTime(date);
+  };
+  const onEndTimeHandler = ([date]) => {
+    setEndTime(date);
+  };
+  const onContentTitleHandler = e => {
+    setContentTitle(e.currentTarget.value);
+  };
+  const onCategoryHandler = e => {
+    setCategory(e.currentTarget.value);
+  };
+  const onMemoHandler = e => {
+    setMemo(e.currentTarget.value);
+  };
   const onSaveHandler = e => {
-    if ('a') {
-      updateContentAPI();
-    } else {
-      addContentAPI();
-    }
+    addContentAPI();
     setIsUpdated(true);
     setModal(false);
   };
@@ -100,10 +119,20 @@ function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
                 <SocialLine />
                 <Title>Start time</Title>
                 <EditContainer>
-                  <EditInput
-                    type="content"
-                    value=""
-                    onChange={onStartTimeHandler}
+                  <TimePickerEditInput
+                    options={{
+                      enableTime: true,
+                      noCalendar: true,
+                      dateFormat: 'H:i',
+                      time_24hr: true,
+                      minuteIncrement: 30,
+                      defaultHour: moment().add(1, 'hours').format('HH:00'),
+                      defaultMinute: 0,
+                    }}
+                    value={startTime}
+                    onChange={([date]) => {
+                      setStartTime(date);
+                    }}
                   />
                 </EditContainer>
               </Section>
@@ -111,10 +140,20 @@ function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
                 <SocialLine />
                 <Title>End time</Title>
                 <EditContainer>
-                  <EditInput
-                    type="content"
-                    value=""
-                    onChange={onEndTimeHandler}
+                  <TimePickerEditInput
+                    options={{
+                      enableTime: true,
+                      noCalendar: true,
+                      dateFormat: 'H:i',
+                      time_24hr: true,
+                      minuteIncrement: 30,
+                      defaultHour: moment().add(1, 'hours').format('HH'),
+                      defaultMinute: 0,
+                    }}
+                    value={endTime}
+                    onChange={([time]) => {
+                      setEndTime(time);
+                    }}
                   />
                 </EditContainer>
               </Section>
@@ -125,7 +164,7 @@ function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
               <EditContainer>
                 <EditInput
                   type="content"
-                  value=""
+                  value={contentTitle}
                   onChange={onContentTitleHandler}
                 />
               </EditContainer>
@@ -136,7 +175,7 @@ function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
               <EditContainer>
                 <EditInput
                   type="content"
-                  value=""
+                  value={category}
                   onChange={onCategoryHandler}
                 />
               </EditContainer>
@@ -145,7 +184,11 @@ function EditCategory({ openModal, setModal, setContents, setIsUpdated }) {
               <SocialLine />
               <Title>Memo</Title>
               <EditContainer>
-                <EditInput type="content" value="" onChange={onBudgetHandler} />
+                <EditInput
+                  type="content"
+                  value={memo}
+                  onChange={onMemoHandler}
+                />
               </EditContainer>
               <SocialLine />
             </Section>
@@ -219,6 +262,21 @@ const EditContainer = styled.div`
 `;
 
 const EditInput = styled.input`
+  flex: 1;
+  width: 50%;
+  height: 50px;
+  padding: 13px 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  outline: none;
+  border: transparent;
+  border-radius: 15px;
+  background-color: white;
+  :focus {
+  }
+`;
+
+const TimePickerEditInput = styled(Flatpickr)`
   flex: 1;
   width: 50%;
   height: 50px;

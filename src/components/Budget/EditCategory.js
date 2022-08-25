@@ -27,13 +27,15 @@ function EditCategory({
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const [categoryColor, setCategoryColor] = useState('#d9cbc2');
+  const [addTitle, setAddTitle] = useState('');
+  const [addTimeBudget, setAddTimeBudget] = useState(null);
   const addCategoryAPI = async () => {
     await axios
       .post(
         `${BASE_URL}/category`,
         {
-          category_name: titleText,
-          timelogs: timeBudget,
+          category_name: addTitle,
+          timelogs: addTimeBudget,
           color_hex: categoryColor,
         },
         {
@@ -46,6 +48,8 @@ function EditCategory({
       .catch(error => {
         console.log(error.response.data);
       });
+    setIsUpdated(true);
+    setModal(false);
   };
   const updateCategoryAPI = async () => {
     const response = await axios.patch(
@@ -62,12 +66,14 @@ function EditCategory({
         },
       }
     );
+    setIsUpdated(true);
+    setModal(false);
   };
   const onTitleHandler = e => {
-    setTitle(e.currentTarget.value);
+    setAddTitle(e.currentTarget.value);
   };
   const onBudgetHandler = e => {
-    setTimeBudget(e.currentTarget.value);
+    setAddTimeBudget(e.currentTarget.value);
   };
   const onSaveHandler = e => {
     if (isCategoryClicked) {
@@ -75,8 +81,6 @@ function EditCategory({
     } else {
       addCategoryAPI();
     }
-    setIsUpdated(true);
-    setModal(false);
   };
   return (
     <>
@@ -101,7 +105,7 @@ function EditCategory({
           <EditContainer>
             <EditInput
               type="content"
-              value={isCategoryClicked ? titleText : ''}
+              value={isCategoryClicked ? titleText : addTitle}
               onChange={onTitleHandler}
             />
           </EditContainer>
@@ -125,7 +129,7 @@ function EditCategory({
             <EditContainer>
               <EditInput
                 type="content"
-                value={isCategoryClicked ? timeBudget : ''}
+                value={isCategoryClicked ? timeBudget : addTimeBudget}
                 onChange={onBudgetHandler}
               />
             </EditContainer>

@@ -6,7 +6,7 @@ import { updateStatus } from '../../utils/updateCurr';
 import BASE_URL from '../../config';
 import Category from './Category';
 import WeeklyTime from './WeeklyTime';
-
+import ContentsByCategory from './ContentsByCategory';
 function Edit() {
   const [modal, setModal] = useState(false);
   const [categories, setCategories] = useState(null);
@@ -28,6 +28,18 @@ function Edit() {
       })
       .catch(error => {});
   };
+  const contentsByCategoryAPI = async () => {
+    await axios
+      .get(`${BASE_URL}/contents/byCategoryId/${categorySelected.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        setContents(response.data?.contents[0]?.content);
+      })
+      .catch(error => {});
+  };
   useEffect(() => {
     if (isUpdated) {
       categoryApi();
@@ -35,11 +47,13 @@ function Edit() {
     setIsUpdated(false);
   }, [isUpdated]);
 
+  useEffect(() => {
+    if (isCategoryClicked) contentsByCategoryAPI();
+  }, [categorySelected]);
   const openModal = () => {
     setModal(true);
   };
   window.onload = setInterval(updateStatus, 1000);
-
   return (
     <Wrapper>
       <Section>
@@ -58,6 +72,11 @@ function Edit() {
           <WeeklyTime
             timeBudget={timeBudget}
             isCategoryClicked={isCategoryClicked}
+          />
+          <ContentsByCategory
+            isCategoryClicked={isCategoryClicked}
+            contents={contents}
+            color={categorySelected?.hex}
           />
         </ScrollArea>
       </Section>

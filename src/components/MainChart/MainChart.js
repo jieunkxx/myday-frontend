@@ -46,11 +46,11 @@ function MainChart(props) {
                 <p>00</p>
               </div>
               <div>
+                <p>18</p>
                 <p>06</p>
-                <p>12</p>
               </div>
               <div>
-                <p>18</p>
+                <p>12</p>
               </div>
             </Numbers>
             <Sectors className="sectors" time={time} />
