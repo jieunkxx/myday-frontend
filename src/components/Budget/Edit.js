@@ -88,7 +88,7 @@ export default Edit;
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 550px;
+  height: 570px;
   display: flex;
 `;
 
@@ -96,10 +96,12 @@ const Section = styled.section`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 8px;
+  margin: 0 8px;
+  margin-top: 20px;
   padding: 10px;
   background-color: #f2f2f2;
   border-radius: 11px;
+  box-shadow: 2px 5px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 `;
 
 const ScrollArea = styled.div`
@@ -107,7 +109,7 @@ const ScrollArea = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-height: 500px;
+  max-height: 550px;
   overflow-y: auto;
   overflow-x: hidden;
   /* Designing for scroll-bar */

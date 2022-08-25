@@ -60,9 +60,10 @@ const Header = styled.div`
 
 const ContentItemContainer = styled.div`
   width: 100%;
+  margin-top: 10px;
   padding: 10px;
   display: flex;
-  min-height: 60px;
+  min-height: 70px;
   align-items: center;
   background-color: white;
   border-radius: 11px;

@@ -31,7 +31,7 @@ export default ContentItem;
 
 const Wrapper = styled.div`
   display: flex;
-  flex: 0 0 10%;
+  flex: 0 0 20%;
 `;
 
 const Section = styled.section`
@@ -55,8 +55,8 @@ const CategoryName = styled.div`
   align-items: center;
   justify-content: center;
   padding: 15px 5px;
-  border-radius: 12px;
+  border-radius: 10px;
   color: white;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 13px;
 `;
