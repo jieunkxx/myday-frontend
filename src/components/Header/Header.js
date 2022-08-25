@@ -24,7 +24,6 @@ function Header() {
       })
         .then(res => res.json())
         .then(data => {
-          console.log('data ', data);
           localStorage.clear();
           localStorage.removeItem('token');
         });

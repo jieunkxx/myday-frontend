@@ -154,23 +154,9 @@ const EditIcon = styled(Edit)`
   }
 `;
 
-const AddIcon = styled(FolderAdd)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 20px;
-  color: ${props => (props.active ? '#007aff' : 'white')};
-  opacity: 0.6;
-  :hover {
-    color: #007aff;
-    cursor: pointer;
-    opacity: 1;
-  }
-`;
-
 const CategoryItemsContainer = styled.div`
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   display: flex;
   align-items: center;
   min-height: 150px;

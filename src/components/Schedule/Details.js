@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { Edit } from '@styled-icons/fa-regular/Edit';
 import ContentsAll from './ContentsAll';
+import EditContents from './EditContents';
 import { updateStatus } from '../../utils/updateCurr';
 import BASE_URL from '../../config';
 
 function Details(props) {
-  const { contents } = props;
+  const { contents, setContents, setIsUpdated } = props;
   const [modal, setModal] = useState(false);
 
   const token = localStorage.getItem('token');
@@ -22,6 +23,14 @@ function Details(props) {
 
   return (
     <Wrapper>
+      {modal && (
+        <EditContents
+          openModel={openModal}
+          setModal={setModal}
+          setContents={setContents}
+          setIsUpdated={setIsUpdated}
+        />
+      )}
       <Section>
         <ScheduleWrapper id="scroll" className="scroll-area">
           <Header>
